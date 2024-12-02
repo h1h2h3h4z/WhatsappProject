@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>WhatsApp Beta</title>
+    <style>
+        /* Add custom styles here */
+    </style>
+</head>
+<body>
+
+<div class="all1 grid grid-cols-1 gap-24 h-screen xl:gap-0 xl:flex xl:flex-col xl:items-center xl:justify-between">
+    <div class="title flex justify-center">
+        <h1 class="text-green-700 font-extrabold text-xl">
+            <span class="font-bold">WELCOME TO</span> WHATSAPP-BETA
+        </h1>
+    </div>
+    <div class="wlogo"> 
+        <img src="img/Whatsapp_Beta.jpg" class="md:w-full md:h-full object-cover">
+    </div>
+    <div class="onec flex flex-col items-center">
+        <div class="text text-sm">
+            Tap "Agree and continue" to accept the <br>
+            <span class="text-blue-700">WhatsApp Terms of Service and Privacy Policy</span>
+        </div>
+        <div class="btag text-white font-semibold bg-green-700 w-80 text-center py-2 mt-2 cursor-pointer">
+            <span>Agree and Continue</span>
+        </div>
+    </div>
+   
+</div>
+<div class="all2">
+<div class="text bg-gray-100 p-3 xl:font-extrabold xl:text-4xl">
+    Whatsapp_Beta
+</div>
+<div class="account flex flex-col items-center bg-gray-100">
+   
+    <div class="imgs xl:w-1/2">
+        <img src="img/logo2.png" alt="">
+        
+    </div>
+    <div class="btm w-4/5 h-auto bg-white shadow-xl text-black mt-16">
+        <div class="c flex items-center p-3 border-b border-black ">
+            <i class='bx bxs-user-account text-2xl'></i>
+            <span class="ml-3 text-lg font-bold"> virtual account </span>
+        </div>
+                <div class="txt p-4 text-center">
+        WhatsApp beta is a testing version of WhatsApp 
+        <br><br>
+        joining the WhatsApp beta program can give you early access to upcoming features and improvements.
+                </div>
+                <div class="btns flex flex-col items-center">
+                    <a href="createaccount.html" class="w-4/5 ">
+                        <div class="get text-white bg-green-600 p-3 text-center xl:text-2xl xl:font-bold font-extrabold cursor-pointer w-full">
+                            Get a virtual account 
+                        </div>
+                    </a>
+                        <div class="have text-sm text-green-600 border xl:text-2xl font-extrabold xl:font-bold border-green-600 p-3 text-center w-4/5 mt-3 cursor-pointer">
+                            Already have Account ? sign in ?
+                        </div>
+                </div>
+            </div>
+            <div class="click">
+                
+            </div>
+</div>
+</div>
+<!-- Include jQuery from Google CDN -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script> 
+    $(".all2").css({display : "none"});
+    $(".btag").on("click",function(){
+        $(".all2").css({display : "block"});
+        $(".all1").css({display : "none"});
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="output.css" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+    <body>
+    
+
+        <div class="first font-bodyfont bg-cover bg-center h-screen w-full object-cover overflow-auto flex flex-col items-center justify-center" style="background-image: url('img/bg.jpg');">
+            <div class="container bg-black xl:w-2/3 h-fit text-center text-gray-300 bg-opacity-40 rounded-xl xl:mt-20 p-5">
+                <div class="entertxt font-semibold text-lg xl:text-5xl xl:font-extrabold text-white mb-3 flex justify-center items-center">
+                    <div class="log">
+                        <i class='bx bxs-lock-alt'></i>
+                    </div>
+                    
+                    log in
+                </div>
+                
+                <div class="img w-auto flex justify-center">
+                    <img src="img/whats.webp" alt="" class="rounded-full w-1/2 xl:w-1/5">
+                </div>
+                
+                <div class="need text-sm my-3 ">
+                    Whatsapp_Beta need an email or phone number to work
+                </div>
+            <div class="t flex flex-col items-center">
+                <div class="inp w-2/3">
+                    <input type="email" value="" placeholder="Mobile number or Email" class="em emailconfirm btn1 outline-none w-full xl:w-1/2 bg-transparent border-b border-blue-500" required>
+                </div>
+                <div class="c  w-full flex justify-center items-center">
+                    <div class="email-check relative hidden bg-white text-left w-80 mt-3 text-sm rounded-lg">
+
+                    </div>
+            </div>
+                <div class="ph flex justify-end  text-blue-700 ml-28 xl:ml-52 cursor-pointer">
+                    phone number ? 
+                </div>
+            </div>
+                <div class="err flex justify-center  xl:ml-48 p-5 text-left text-primary">
+
+                </div>
+                
+            </div>
+            <div class="inp text-white">
+                <input type="button" value="Next" class="bt1 mt-9 p-2 bg-green-900 w-40 xl:w-96 cursor-pointer rounded-full">
+            </div>
+        </div>
+        
+        <div class="second font-bodyfont bg-cover bg-center h-screen w-full object-cover overflow-auto flex flex-col items-center justify-center" style="background-image: url('img/bg.jpg'); display: none;" >
+            <div class="container bg-black xl:w-2/3 h-fit text-center text-gray-300 bg-opacity-40 rounded-xl xl:mt-20 p-5">
+                <div class="entertxt font-semibold text-lg xl:text-5xl xl:font-extrabold text-white mb-3 flex justify-center items-center">
+                    <div class="log">
+                        <i class='bx bxs-lock-alt'></i>
+                    </div>
+                    
+                    log in
+                </div>
+                
+                <div class="img w-auto flex justify-center">
+                    <img src="img/whats.webp" alt="" class="rounded-full w-1/2 xl:w-1/5">
+                </div>
+                
+                <div class="need text-sm my-3 ">
+                   
+                </div>
+            <div class="t flex flex-col items-center">
+                <div class="inp w-2/3">
+                    <input type="password" value="" placeholder="password" class="pass emailconfirm btn1 outline-none w-full xl:w-1/2 bg-transparent border-b border-blue-500" required>
+                </div>
+                <div class="c  w-full flex justify-center items-center">
+                    <div class="pass-check relative hidden bg-white text-left w-80 mt-3 text-sm rounded-lg">
+
+                    </div>
+            </div>
+                
+            </div>
+                <div class="err flex justify-center  xl:ml-48 p-5 text-left text-primary">
+
+                </div>
+                
+            </div>
+            <div class="inp text-white">
+                <input type="button" value="Next" class="bt2 mt-9 p-2 bg-green-900 w-40 xl:w-96 cursor-pointer rounded-full">
+            </div>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            var checkemailif=null;
+            let email = null;
+             $(".em").on("keyup", function() {
+            email = $(this).val();
+            
+            $(".email-check").show();
+            
+            console.log(email);
+            var checkemail=false;
+            $.ajax({
+                url: "login.php",
+                method: "POST",
+                data: { email: email },
+                dataType: "JSON",
+                
+                success: function(data) {
+                    console.log(data);
+                    
+                    if(data.data[0].login){
+                        $(".email-check").html("<div class='text-green-500 mt-1'><i class='bx bx-check'></i>email exist</div>");
+                        $(".log").html("<i class='bx bx-lock-open-alt'></i>");
+                        checkemailif=true;
+
+                    }
+                    else { 
+                        $(".email-check").html("<div class='text-red-500 mt-1'><i class='bx bx-x'></i>email not found</div>");
+                        $(".log").html("<i class='bx bxs-lock-alt'></i>");
+                        checkemailif = false;
+                        
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("AJAX error: " + textStatus + ": " + errorThrown);
+                }
+               
+            });
+           
+        });
+        $(".bt1").on("click",function(){
+           
+            if(checkemailif){
+                $(".second").show();
+                $(".first").hide();
+                $(".need").html(`enter the password  of <br> <span class="text-secondary-300 font-bold text-lg">${email}<span>  `);
+                   
+            }
+        });
+        $(".bt2").on("click",function(){
+            var password = $(".pass").val();
+            $.ajax({
+                        url : "loginpass.php",
+                        method : "post",
+                        data : {email : email,
+                            password : password
+
+                        },
+                        dataType :"JSON",
+                        success : function (data){
+                            if(data.data[0].login){
+                                window.location= 'whatsapppage.html';
+                            }
+                        }
+                    })
+        });
+        </script>
+    </body>
+</html>

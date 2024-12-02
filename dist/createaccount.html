@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="output.css" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div class="first font-bodyfont bg-cover bg-center h-screen w-full object-cover overflow-auto flex flex-col items-center justify-center" style="background-image: url('img/bg.jpg');">
+        <div class="container bg-black xl:w-2/3 h-fit text-center text-gray-300 bg-opacity-40 rounded-xl xl:mt-20 p-5">
+            <div class="entertxt font-semibold text-lg xl:text-5xl xl:font-extrabold text-white mb-3">
+                Enter your Email
+            </div>
+            
+            <div class="img w-auto flex justify-center">
+                <img src="img/whats.webp" alt="" class="rounded-full w-1/2 xl:w-1/5">
+            </div>
+            
+            <div class="need text-sm my-3 ">
+                Whatsapp_Beta need an email or phone number to work
+            </div>
+        <div class="t flex flex-col items-center">
+            <div class="inp w-2/3">
+                <input type="email" value="" placeholder="Mobile number or Email" class="em emailconfirm btn1 outline-none w-full xl:w-1/2 bg-transparent border-b border-blue-500" required>
+            </div>
+            <div class="c  w-full flex justify-center items-center">
+                <div class="email-check relative hidden bg-white text-left w-80 mt-3 text-sm rounded-lg">
+
+                </div>
+        </div>
+            <div class="ph flex justify-end  text-blue-700 ml-28 xl:ml-52 cursor-pointer">
+                phone number ? 
+            </div>
+        </div>
+            <div class="err flex justify-center  xl:ml-48 p-5 text-left text-primary">
+
+            </div>
+            
+        </div>
+        <div class="inp text-white">
+            <input type="button" value="Next" class="bt1 mt-9 p-2 bg-green-900 w-40 xl:w-96 cursor-pointer rounded-full">
+        </div>
+    </div>
+
+    <div class="pass" style="display: none;">
+        <div class="bg-cover bg-center h-screen w-full object-cover overflow-auto flex flex-col items-center justify-center" style="background-image: url('img/bg.jpg');">
+            <div class="container bg-black w-full h-auto text-center text-gray-300 bg-opacity-40 rounded-xl p-5">
+                <div class="entertxt font-semibold text-lg xl:text-5xl xl:font-extrabold text-white mb-3">
+                    Enter your password
+                </div>
+                <div class="img w-full flex justify-center">
+                    <img src="img/whats.webp" alt="" class="rounded-full w-1/2 xl:w-1/4">
+                </div>
+                
+                <div class="need text-sm my-3">
+                    Enter your password to continue
+                </div>
+                <div class="inp">
+                    <input type="password" value="" placeholder="Enter your password" class="password btn1 outline-none w-2/3 xl:w-1/2 bg-transparent border-b border-blue-500">
+                </div>
+                <div class="c  w-full flex justify-center items-center">
+                    <div class="pass-check relative hidden bg-white text-left w-80 mt-3 text-sm rounded-lg">
+                        <div class="cp">
+                            
+                        </div>
+                    </div>
+            </div>
+                <div class="inp text-white">
+                    <input type="button" value="Next" class=" passnext mt-9 p-2 bg-green-900 w-40 xl:w-1/3 cursor-pointer rounded-full">
+                </div>
+               
+            </div>
+        </div>
+
+    </div>
+    <div class="name" style="display: none;">
+        <div class="bg-cover bg-center h-screen w-full object-cover overflow-auto flex flex-col items-center justify-center" style="background-image: url('img/bg.jpg');">
+            <div class="container bg-black w-full h-auto text-center text-gray-300 bg-opacity-40 rounded-xl p-5">
+                <div class="entertxt font-semibold text-lg xl:text-5xl xl:font-extrabold text-white mb-3">
+                    Create Profile
+                </div>
+                <div class="two flex justify-center items-center">
+                    <label for="profile-photo" class="img text-secondary-300 font-semibold  border w-20 h-20 flex justify-center items-center border-white rounded-full cursor-pointer">
+                        <input type="file" id="profile-photo" style="display: none;">
+                        add <br> photo
+                    </label>
+                    
+                    <div class="text ml-3 text-sm xl:text-lg">
+                        Enter your name and add an optional <br><span class="flex">profile picture</span> 
+                    </div>
+                </div>
+                <div class="inp mt-4">
+                    <input type="text" value="" placeholder="Enter your name" class="username btn1 outline-none w-1/2 xl:w-1/2 bg-transparent border-b border-blue-500">
+                </div>
+                <div class="inp mt-4 relative items-center">
+                    <i class='bx bx-question-mark absolute '></i>
+                    <input type="text" value="" placeholder="About" class="about btn1 outline-none w-1/2 xl:w-1/2 bg-transparent border-b border-blue-500" style="padding-left: 16px;">
+                </div>
+                
+                <div class="inp text-white">
+                    <input type="button" value="Next" class="lastnext mt-9 p-2 bg-green-900 w-40 xl:w-1/3 cursor-pointer rounded-full">
+                </div>
+            </div>
+        </div>
+    </div>
+
+  <div class="try">
+
+  </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script> 
+    var trueemail=null;
+        $(document).ready(function() {
+            $(document).on("click",".img",function() {
+                $('#profile-photo').click();
+               
+            });
+             fileName ='';
+            // Handling file selection (optional)
+            $(document).on("change","#profile-photo",function() {
+             fileName = $(this).val().split('\\').pop();
+                console.log('Selected file:', fileName);
+                
+                
+                $(".img").html(`<img src="img/${fileName}" class='w-full h-20 rounded-full object-cover' alt='no photo'>
+                <input type="file" id="profile-photo" style="display: none;">
+                `);
+                // You can add further handling here, such as displaying the file name
+            });
+            $(".lastnext").on("click",function(){
+        let email = $(".emailconfirm").val();
+        let password = $(".password").val();
+        let photo = fileName;
+        let username = $(".username").val();
+        let about = $(".about").val();
+        //console.log(email + " " + password + " "+photo+" "+username +" " + about);
+        $.ajax({
+    url: "createaccount.php",
+    method: "POST",
+    dataType: "JSON", // Specify the expected dataType (e.g., json, html, text)
+    data: {email : email , 
+        password : password,
+        photo : photo , 
+        username : username ,
+        about : about
+
+    },
+    success: function(data) {
+        console.log(data);
+        if(data.data[0].login){
+            window.location="index.html";
+        }
+    },
+    error: function(xhr, status, error) {
+        console.log("Error:", xhr, status, error); // Handle error response
+    }
+});
+
+    });
+
+            //$(".pass").hide(); // Initial hide of the pass section
+
+            // Handle click on the input field
+            $('.btn1').on('click', function() {
+                $(this).removeClass('w-1/2 xl:w-1/2');
+                $(this).addClass('w-10/12 xl:w-4/5');  // Example of adding a class
+                $(this).addClass("border-blue-900");
+                $(this).removeClass('border-blue-500');
+                $(this).css({transition:"1s"});
+            });
+
+            // Handle click outside of the input field
+            $(document).on('click',".name", function(event) {
+                if (!$(event.target).closest('.btn1').length) {
+                    $('.btn1').addClass('w-1/2 xl:w-1/2');
+                    $('.btn1').removeClass('w-10/12 xl:w-4/5');
+                    $('.btn1').addClass('border-blue-500');
+                    $('.btn1').removeClass('border-blue-900');
+                    $('.btn1').css({transition:"1s"});
+                    $(".email-check").hide();
+                }
+            });
+            $(document).on('click',".first", function(event) {
+                if (!$(event.target).closest('.btn1').length) {
+                    $('.btn1').addClass('w-1/2 xl:w-1/2');
+                    $('.btn1').removeClass('w-10/12 xl:w-4/5');
+                    $('.btn1').addClass('border-blue-500');
+                    $('.btn1').removeClass('border-blue-900');
+                    $('.btn1').css({transition:"1s"});
+                    $(".email-check").hide();
+                }
+            });
+            var truepass = false; // Initialize truepass to false
+  // Function to update pass-check div based on password input
+
+
+            $(".password").on("keyup", function() {
+        $(".pass-check").show();
+        var password2 = $(this).val().trim();
+        console.log(password2.length); // Check password length in console
+        
+        // Check if password length is greater than or equal to 10
+        let lengthMessage = '';
+        if (password2.length >= 10) {
+            lengthMessage = "<div class='text-green-500 mt-1'><i class='bx bx-check'></i> Password length is sufficient</div>";
+            truepass = true;
+        } else {
+            lengthMessage = "<div class='text-red-500 mt-1'><i class='bx bx-x'></i> Password should be at least 10 characters long</div>";
+            truepass = false;
+        }
+        
+        $(".cp").html(lengthMessage);
+    });
+
+            $(".passnext").on("click",function(){
+                if (truepass){
+
+                $(".name").show();
+                $(".pass").hide();
+                }
+                else {
+                    $(".password").css({border:"1px solid red"});
+                }
+            });
+            $(".em").on("keyup",function(){
+               
+                $(".email-check").show();
+                var email = $(this).val().trim();
+                var divs='';
+                console.log(email.length);
+                if (email.endsWith('@gmail.com')) {
+                    var divs = "<div class='text-green-500  flex justify-start items-center mt-1'><i class='bx bx-check'></i>true email</div>";
+                } else {
+                    var divs = "<div class='text-red-500 mt-1  flex justify-start items-center'><i class='bx bx-x'></i>email should be end by '@gmail.com'</div>";
+                }
+                var length1 ='';
+                if(email.length>15){
+                     var length1 = "<div class='text-green-500 mt-1'><i class='bx bx-check'></i>true length</div>";
+                } else {
+                    var length1 = "<div class='text-red-500 mt-1'><i class='bx bx-x'></i>email should be begear than 15</div>";
+                }
+                if(email.endsWith('@gmail.com') & email.length>15){
+                    trueemail = true ;
+                }
+                else{
+                    trueemail=false;
+                }
+                $(".email-check").html(divs);
+                $(".email-check").append(length1);
+      
+
+            });
+
+
+            
+
+            // Handle Next button click
+            $(".bt1").on("click", function() {
+                var inputValue = $(".em").val().trim();
+                if(trueemail){
+                if (inputValue !== '') {
+                    $(".pass").show();
+                    $(".first").hide();
+                } else {
+                    $(".err").empty();
+                    $(".err").append("enter your email or phone number");
+                    
+                    $(".em").addClass("border-red-900");
+                   
+
+                }
+            }
+            });
+        });
+       
+   
+    </script>
+</body>
+</html>

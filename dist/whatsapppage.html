@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="output.css" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div class="all grid grid-cols-4 h-screen w-full">
+
+        <div class="left col-span-1 overflow-auto">
+        
+            <div class="head p-2 h-14 bg-slate-200">
+                <div class="profile flex justify-between items-center  ">
+                    <div class="img cursor-pointer flex items-baseline ">
+                        
+                    </div>
+                    <div class="status flex items-center">
+                        <i class='bx bx-station text-3xl text-slate-700 p-2 w-auto cursor-pointer'></i>
+                        <div class="groups">
+
+                        </div>
+                        <i class='gr bx bxs-group text-3xl text-slate-700 p-2 w-auto cursor-pointer relative'></i>
+
+                        <i class='bx bx-menu text-3xl text-slate-700 p-2 w-auto cursor-pointer'></i>
+                        <div class="veiwrequest bg-white w-1/5 h-64 mr-44 left-1 shadow-2xl rounded-bl-lg rounded-br-lg rounded-tl-lg mt-72 absolute overflow-auto " style="display: none;">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="search  mt-2 h-auto w-full border-b border-slate-200 " >
+                <div class="s flex text-slate-700 ml-2">
+                    <div class="slogo bg-slate-200 p-1.5 rounded-l-lg "> 
+                        <i class='bx bx-search-alt-2 text-lg' ></i>
+                    </div>
+                    <div class="sinp  w-full">
+                        <input type="Search" class="search bg-slate-200 w-11/12 mr-1 p-1.5 rounded-r-lg outline-none " placeholder="search" >
+                    </div>
+                </div>
+                <div class="types mt-3 flex ml-2 mb-2" >
+                    <span class="bg-green-200 text-green-600 p-2 rounded-full text-sm mr-1 cursor-pointer ">All</span>
+                    <span class="bg-slate-200 text-slate-700 p-2 rounded-full text-sm mr-1 cursor-pointer">Unread</span>
+                    <span class="bg-slate-200  text-slate-700 p-2 rounded-full text-sm  cursor-pointer">Groups</span>
+                </div>
+                
+            </div>
+            <div class="persons">
+                <!-- Add person elements here -->
+            </div>
+        </div>
+
+        <div class="right col-span-3 ">
+            <!-- Content for the right section -->
+             
+        </div>
+       
+    </div>
+
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+
+        let add = '';
+        function showallrequset(){
+            $(".veiwrequest").empty();
+            $.ajax({
+                url: "showrequest.php",
+                data : {},
+                dataType : "json",
+                method :"post",
+                success : function (data){
+                    
+                    $.each(data.data, function(index, names) {
+                       
+                        $(".veiwrequest").append(`<div class='mt-1 '><div class='p-2'>
+                            <img src='img/${names.photo}' class='w-10'>
+                            ${names.username} send friend requset</div>
+                            <div class='w-full  mr-1  flex justify-end mt-2'>
+                             <button class='acceptfriend p-2 bg-blue-600 rounded-md px-6  text-white' data-id='${names.requestid}'>accept</button>
+                             <button class='removefriend p-2 bg-red-600 rounded-md px-6 text-white mr-1 ml-1' >remove</button>
+                            </div>
+                            </div>`);
+                    });
+                }
+            })
+        }
+        showallrequset();
+        setInterval(showallrequset,5000);
+        $(document).on("click",".acceptfriend",function(){
+            let requsetid =$(this).data('id');
+           
+            $.ajax({
+                url : "acceptfriend.php",
+                method :"post",
+                data:{requsetid : requsetid},
+                success:function(){
+
+                }
+            })
+        });
+        function myfriends(){
+            
+            $.ajax({
+            url:"showfriends.php",
+            method:"post",
+            data :{},
+            dataType:"json",
+            success :function(data){
+                $(".persons").empty();
+                
+                $.each(data.data, function(index, names) {
+                    if(names.lastmessage.length >35){
+                        let firstFourLetters = names.lastmessage.substring(0, 35);
+                        names.lastmessage=firstFourLetters+".........";
+                    }
+                    $(".persons").append(`<div class='person flex justify-start border-b border-slate-200 p-2 hover:bg-slate-200 cursor-pointer' data-id='${names.id}'>
+                    <div><img src='img/${names.photo}' class='w-14 rounded-full'></div>
+                    <div >
+                        <div class=''>${names.username}</div>
+                        <div class='text-sm ml-1'>${names.lastmessage}</div>
+                    </div>
+                    </div>`);
+                })
+               
+            }
+            
+        });
+        }
+       myfriends();
+       setInterval(myfriends,1000);
+        var friendid=null;
+        $(document).on("click", ".person", function() {
+     friendid = $(this).data('id');
+    
+    
+    $.ajax({
+        url: "myfriend.php",
+        method: "post",
+        data: { friendid: friendid },
+        dataType: 'json',
+        success: function(data) {
+            $(".right").html(`
+                <div  class='relative h-screen  flex flex-col'>
+                    
+                    <!-- Header -->
+                    <div class='bg-slate-200 w-full flex justify-between items-center'>
+                        <div class='p-1 flex items-center'>
+                            <div class='bg-opacity-20 p-0 bg-black rounded-full flex items-center justify-center'>
+                                <img src='img/${data.data[0].photo}' class='w-12 rounded-full'>
+                            </div>
+                            <div class='ml-2 font-semibold'>${data.data[0].username}</div>
+                        </div>
+                        
+                        <div class='flex items-center'>
+                            <i class='bx bx-search text-2xl mr-4 cursor-pointer'></i>
+                            <img src='img/search.svg' class='w-2 cursor-pointer'>
+                        </div>
+                    </div>
+                    
+                    <!-- Messages View -->
+                    <div class='messagesview flex p-3 flex-col overflow-auto h-screen' style="background-image: url('img/wbg.jpg');">
+                        <!-- Messages will be appended here -->
+                    </div>
+                    
+                    <!-- Input Area -->
+                   
+                        <div class='bg-slate-200 p-4 w-full flex items-center justify-between'>
+                            <div><i class='bx bx-plus text-3xl'></i></div>
+                            <div class='w-11/12'>
+                                <input type='text' placeholder='Type a message' class='messagetext border-none w-full p-2'>
+                            </div>
+                            <div class='voice'>
+                                <img src='img/microphone-solid.svg' class='w-5'>
+                            </div>
+                        </div>
+                   
+                </div>
+            `);
+            messagesview();
+            setInterval(messagesview,1000);
+            $(document).on("keyup", ".messagetext", function() {
+                if ($(this).val() != '') {
+                    $(".voice").html(`<i class='messagesend text-3xl cursor-pointer bx bxs-send' data-id='${data.data[0].id}'></i>`);
+                } else {
+                    $(".voice").html(`<img src='img/microphone-solid.svg' class='w-5'>`);
+                }
+            });
+        }
+    });
+
+});
+
+async function messagesview(){
+
+
+$.ajax({
+    url: 'showmessages.php',
+    method: "post",
+    data: { receverid:friendid},
+    dataType: "json",
+    success: function(data) {
+        $(".messagesview").empty();
+      
+        data.data.forEach(function(elements) {
+            if (elements.align == 'left') {
+                $(".messagesview").append(`
+                    <div class='text-left bg-white p-1 mt-1 ml-10 mr-auto inline-block w-auto rounded-xl p-2 h-auto mb-auto' style='max-width: 50%;'>
+                        ${elements.messages}
+                    </div>
+                `);
+            }
+            if (elements.align == 'right') {
+                $(".messagesview").append(`
+                    <div class='text-right bg-green-200 p-1 mt-1 ml-auto mr-10 inline-block rounded-xl h-auto mb-auto p-2' style='max-width: 50%;'>
+                        ${elements.messages}
+                    </div>
+                `);
+            }
+        });
+        $(".messagesview").scrollTop($(".messagesview")[0].scrollHeight);
+    }
+    
+});
+}
+
+ $(document).on("click",".messagesend",function(){
+            var messagetext= $(".messagetext").val();
+            $(".messagetext").val("");
+            $(".voice").html(`<img src='img/microphone-solid.svg' class='w-5'>`);
+            var receverid = $(this).data('id');
+            console.log(messagetext + receverid);
+            $.ajax({
+                url : "sendcomment.php",
+                method : "post",
+                data:
+                {
+                    messagetext:messagetext,
+                    receverid : receverid
+                },
+                dataType:"",
+                success : function(data){
+
+                }
+            })
+        });
+        function checknoti(){
+            $.ajax({
+                url:"requestnb.php",
+                method :"post",
+                data:{},
+                dataType : "json",
+                success: function(data){
+                    if(data.data[0].numberofrequest>0){
+                        $(".groups").html(`<div class='absolute w-auto h-auto bg-green-400  py-1 px-2 rounded-full text-xs top-2 left-90 text-white border border-b-transparent'>${data.data[0].numberofrequest}</div>`);
+                    }
+                    else{
+                        $(".groups").empty();
+                    }
+                }
+            })
+        }
+          checknoti();
+          setInterval(checknoti,5000); 
+      
+        $(".search").on("keyup",function(){
+            let text =$(this).val();
+            $(".slogo").html(`<i class='bx bx-arrow-back back cursor-pointer '></i>`);
+            $(".types").empty();
+            function friends(){
+
+            
+            $.ajax({
+                url:"names.php",
+                method :"post",
+                dataType:"json",
+                data:{text : text },
+                success : function(data){
+                    console.log(data);
+        $.each(data.data, function(index, names) {
+            
+            if (names.friends){
+                add=`<div  class='rounded-md flex justify-center items-center mr-2 bg-slate-200  
+                    p-2 text-sm cursor-pointer  text-white' data-id='${names.id}'> 
+        <div>
+        <img src='img/user-check.svg' class='w-5 mr-1'>
+    </div>
+    <div class='text-md font-bold text-black'>Friends</div></div>
+`;
+            }
+            else if (names.friendsend){
+                if(names.friends){
+                    add=`<div  class='rounded-md flex justify-center items-center mr-2 bg-slate-200  
+                    p-2 text-sm cursor-pointer  text-white' data-id='${names.id}'> 
+        <div>
+        <img src='img/user-check.svg' class='w-5 mr-1'>
+    </div>
+    <div class='text-md font-bold text-black'>Friends</div></div>
+`;
+                }
+                else{
+                    add=`<div  class='removerequest rounded-md flex justify-center items-center mr-2 bg-blue-800 text-gray-300 
+                    p-2 text-sm cursor-pointer  text-white' data-id='${names.id}'> 
+        <div>
+        <img src='img/user-minus.svg' class='w-5 mr-1' style='filter: invert(100%);'>
+    </div>
+    <div class='text-md font-semibold'>Cancel request</div></div>
+`;
+                }
+            }
+            else{
+                
+                add=`<div  class='addfriend  rounded-md flex justify-center items-center mr-2 bg-blue-800 text-gray-300 
+                    p-2 text-sm cursor-pointer  text-white' data-id='${names.id}'> 
+        <div>
+        <img src='img/user-plus.svg' class='w-5 mr-1' style='filter: invert(100%);'>
+    </div>
+    <div class='text-md font-semibold'>Add Friend</div></div>
+`;
+            }
+            $(".types").removeClass("flex");
+            $(".search").removeClass('border-b border-slate-200');
+          
+            $(".types").html(`<div class='flex justify-between items-center border-b border-slate-200'>
+                <div class='flex mb-4 mt-3'>
+                <div class='w-11'><img src='img/${names.photo}' ></div>
+                <div class='flex justify-center items-center ml-2 cursor-pointer'>${names.username
+                }</div>
+                </div>
+                ${add}
+                
+                </div>`); // Append each username
+        });
+                   
+                }
+            })
+        }
+        friends();
+        
+        });
+        $(document).on("click",".addfriend",function(){
+            $(this).removeClass('addfriend');
+            $(this).addClass('removerequest');
+          $(this).html(` <div>
+        <img src='img/user-minus.svg' class='w-5 mr-1' style='filter: invert(100%);'>
+    </div>
+    <div class='text-md font-semibold'>Cancel request</div>`);
+            let recieverid= $(this).data('id');
+            
+            $.ajax({
+                url:"sendfriend.php",
+                method : "post",
+                data : {recieverid : recieverid},
+                dataType : "",
+                success  : function(){
+                
+                }
+            })
+        });
+        $(".gr").on("click",function(){
+            $(".veiwrequest").slideToggle();
+            $.ajax({
+                url : "read.php",
+                method :"post",
+                success : function(){
+
+                }
+            })
+        })
+        $(document).on("click",".removerequest",function(){
+            userreciverid= $(this).data('id');
+            $(this).removeClass("removerequest");
+            $(this).addClass('addfriend');
+            $(this).html(` <div>
+        <img src='img/user-plus.svg' class='w-5 mr-1' style='filter: invert(100%);'>
+    </div>
+    <div class='text-md font-semibold'>Add Friend</div>`);
+    $.ajax({
+        url: 'removerequest.php',
+        method : "post",
+        data : {userreciverid : userreciverid},
+        success : function(){
+
+        }
+    })
+        });
+        $(document).on("click",".back",function(){
+            $(".slogo").html(`<i class='bx bx-search-alt-2 text-lg'></i>`);
+            $(".types").html(`<span class="bg-green-200 text-green-600 p-2 rounded-full text-sm mr-1 cursor-pointer">All</span>
+                    <span class="bg-slate-200 text-slate-700 p-2 rounded-full text-sm mr-1 cursor-pointer">Unread</span>
+                    <span class="bg-slate-200 text-slate-700 p-2 rounded-full text-sm  cursor-pointer">Groups</span>`);
+                    $(".search").val('');
+                    $(".types").addClass("flex");
+                    $(".search").addClass('border-b border-slate-200');
+        });
+        $.ajax({
+            url: "page.php",
+            method: "post",
+            data: {},
+            dataType: "json", // Set dataType to "html"
+            success: function (data) {
+                // localStorage.setItem('data', JSON.stringify(data));
+                //     console.log(JSON.parse(localStorage.getItem('data')));
+               $(".img").html(`<img src="img/${data.data[0].photo}" alt="" class="w-11 h-11 object-cover rounded-full">`);
+               $(".all").append(`
+        <div class='profilechange bg-slate-200'>
+
+<div class="w-full bg-green-800 h-28 relative flex ">
+    <div class="text-white absolute bottom-0 mb-4 flex ml-6 items-center ">
+        <div class='mr-6 cursor-pointer text-lg font-bold'><i class='backprofile bx bx-arrow-back '></i></div>
+        <div class='text-lg font-bold'> Profile</div>
+        
+         
+         
+         </div>
+    
+</div>
+        <div class=' flex justify-center mt-4 w-full'>
+            <div class='relative w-full flex justify-center items-center'>
+            <img src='img/${data.data[0].photo}' class='pimg w-1/2 object-cover cursor-pointer rounded-full relative'>
+            <div class='changeph opacity-0 absolute bg-black cursor-pointer w-1/2 p-16 bg-opacity-75 flex justify-center rounded-full'>
+                <div class=' text-white px-4 py-2 w-full flex  flex-col justify-center items-center'><i class='bx bxs-camera text-2xl mb-2'></i><div class='  absolute mt-16  '><span class=' flex justify-center items-center  text-xs  w-full'>CHANGE</span><span class='text-xs '>PROFILE PHOTO</span></div></div>
+                <div class='hidden'><input type="file"></div>
+            </div> <!-- Overlay -->
+            <div class='chanephotoc absolute bg-white rounded-lg pb-2 ' style="display: none;" >
+                <div class='mr-10  hover:bg-slate-200 w-full mt-3 p-2 cursor-pointer'><span class='ml-2 '>View photo</span></div>
+                <div  class='mr-10 mr-10  hover:bg-slate-200 w-full mt-3 p-2 cursor-pointer'><span class='ml-2'>Upload photo</span></div>
+                <div  class='mr-10 mr-10 hover:bg-slate-200 w-full mt-3 p-2 cursor-pointer'><span class='ml-2'>Remove photo</span></div>
+                
+            </div>
+            </div>
+           
+        </div>
+        <div class='w-full bg-white p-6 mt-5 '>
+            <div class='text-green-800 text-sm'>Your name</div>    
+            <div class='flex justify-between mt-2'>
+            <div class=' text-lg'>${data.data[0].username}</div>
+            <div><img src='img/pen-solid.svg' class='w-5></div>
+            </div>
+        </div>
+        
+        
+        
+        `);
+        $('.profilechange').css({
+            
+            width : "25%",
+            height : "100vh",
+            position :"absolute",
+            marginLeft :"-900px"
+        });
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX Error: " + status + error);
+            }
+        }); 
+        $(".gr").on("click",function(){
+
+        })
+        $(document).on("click",".backprofile",function(){
+            $('.profilechange').css({
+            
+            width : "25%",
+            height : "100vh",
+            position :"absolute",
+            marginLeft :"-900px"
+        });
+        });
+
+        $(document).on("mouseenter",".changeph",function(){
+         
+            
+            $(".changeph").css({
+                opacity: "1",
+                transition: "opacity 0.3s"
+            });
+        });
+        $(document).on("mouseleave",".changeph",function(){
+            
+            
+            $(".changeph").css({
+                opacity: "0",
+                transition: "opacity 0.3s"
+            });
+        });
+        $(document).on("click",".changeph",function(event){
+            $(".chanephotoc").toggle();
+            var positionX = event.pageX;
+    var positionY = event.pageY;
+
+    // Set the position of the .chanephotoc div
+    $(".chanephotoc").css({
+      
+       
+        left: positionX + "px" // Set left position based on mouseX
+    });
+        })
+   
+
+
+        $(".img").on("click",function(){
+             
+            $('.profilechange').css({
+            
+            width : "25%",
+            height : "100vh",
+            position :"absolute",
+            marginLeft :"0px",
+            transition :"0.5s"
+        });
+        });
+       
+    </script>
+</body>
+</html>
